@@ -2,7 +2,7 @@ module be.personal {
     requires transitive javafx.controls;
     requires javafx.fxml;
 
-    opens be.personal.GUI to javafx.fxml;
-    exports be.personal.GUI;
+    opens be.personal.GUIRedesign to javafx.fxml;
+    exports be.personal.GUIRedesign;
     exports be.personal.pieces;
 }

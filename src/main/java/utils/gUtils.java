@@ -10,20 +10,20 @@ public class gUtils {
         return b ? 1 : 0;
     }
 
-    public static ArrayList<Integer[]> diagonals(byte c, byte b, color co, piece[][] board) {
+    public static ArrayList<Integer[]> diagonals(int pos, int pos2, color co, piece[][] board) {
         boolean[] dirs = new boolean[]{true, true, true, true};
         int n = 1;
         ArrayList<Integer[]> list = new ArrayList<Integer[]>(1);
         while(dirs[0] || dirs[1] || dirs[2] || dirs[3]) {
             if(dirs[0]){
-                if(b + n < 8
-                && c + n < 8){
-                    if(board[b + n][c + n].co == color.EMPTY
-                    || board[b + n][c + n].co == co.other()){
-                        list.add(new Integer[]{b + n, c + n});
+                if(pos2 + n < 8
+                && pos + n < 8){
+                    if(board[pos2 + n][pos + n].co == color.EMPTY
+                    || board[pos2 + n][pos + n].co == co.other()){
+                        list.add(new Integer[]{pos2 + n, pos + n});
                     }
-                    if(board[b + n][c + n].co == co
-                    || board[b + n][c + n].co == co.other()){
+                    if(board[pos2 + n][pos + n].co == co
+                    || board[pos2 + n][pos + n].co == co.other()){
                         dirs[0] = false;
                     }
                 }else{
@@ -31,14 +31,14 @@ public class gUtils {
                 }
             }
             if(dirs[1]){
-                if(b - n >= 0
-                && c + n < 8){
-                    if(board[b - n][c + n].co == color.EMPTY
-                    || board[b - n][c + n].co == co.other()){
-                        list.add(new Integer[]{b - n, c + n});
+                if(pos2 - n >= 0
+                && pos + n < 8){
+                    if(board[pos2 - n][pos + n].co == color.EMPTY
+                    || board[pos2 - n][pos + n].co == co.other()){
+                        list.add(new Integer[]{pos2 - n, pos + n});
                     }
-                    if(board[b - n][c + n].co == co
-                    || board[b - n][c + n].co == co.other()){
+                    if(board[pos2 - n][pos + n].co == co
+                    || board[pos2 - n][pos + n].co == co.other()){
                         dirs[1] = false;
                     }
                 }else{
@@ -46,14 +46,14 @@ public class gUtils {
                 }
             }
             if(dirs[2]){
-                if(b + n < 8
-                && c - n >= 0){
-                    if(board[b + n][c - n].co == color.EMPTY
-                    || board[b + n][c - n].co == co.other()){
-                        list.add(new Integer[]{b + n, c - n});
+                if(pos2 + n < 8
+                && pos - n >= 0){
+                    if(board[pos2 + n][pos - n].co == color.EMPTY
+                    || board[pos2 + n][pos - n].co == co.other()){
+                        list.add(new Integer[]{pos2 + n, pos - n});
                     }
-                    if(board[b + n][c - n].co == co
-                    || board[b + n][c - n].co == co.other()){
+                    if(board[pos2 + n][pos - n].co == co
+                    || board[pos2 + n][pos - n].co == co.other()){
                         dirs[2] = false;
                     }
                 }else{
@@ -61,14 +61,14 @@ public class gUtils {
                 }
             }
             if(dirs[3]){
-                if(b - n >= 0
-                && c - n >= 0){
-                    if(board[b - n][c - n].co == color.EMPTY
-                    || board[b - n][c - n].co == co.other()){
-                        list.add(new Integer[]{b - n, c - n});
+                if(pos2 - n >= 0
+                && pos - n >= 0){
+                    if(board[pos2 - n][pos - n].co == color.EMPTY
+                    || board[pos2 - n][pos - n].co == co.other()){
+                        list.add(new Integer[]{pos2 - n, pos - n});
                     }
-                    if(board[b - n][c - n].co == co
-                    || board[b - n][c - n].co == co.other()){
+                    if(board[pos2 - n][pos - n].co == co
+                    || board[pos2 - n][pos - n].co == co.other()){
                         dirs[3] = false;
                     }
                 }else{
@@ -80,19 +80,19 @@ public class gUtils {
         return list;
     }
 
-    public static ArrayList<Integer[]> rowsAndColumns(byte b, byte c, color co, piece[][] board){
+    public static ArrayList<Integer[]> rowsAndColumns(int pos, int pos2, color co, piece[][] board){
         ArrayList<Integer[]>  arr = new ArrayList<Integer[]>();
         boolean[] dirs = new boolean[]{true, true, true, true};
         int n = 1;
         while(dirs[0] || dirs[1] || dirs[2] || dirs[2]){
             if(dirs[3]){
-                if(c - n >= 0){
-                    if(board[b][c - n].co == color.EMPTY
-                    || board[b][c - n].co == co.other()){
-                        arr.add(new Integer[]{(int) b, c - n});
+                if(pos2 - n >= 0){
+                    if(board[pos][pos2 - n].co == color.EMPTY
+                    || board[pos][pos2 - n].co == co.other()){
+                        arr.add(new Integer[]{(int) pos, pos2 - n});
                     }
-                if(board[b][c - n].co == co.other()
-                || board[b][c - n].co == co){
+                if(board[pos][pos2 - n].co == co.other()
+                || board[pos][pos2 - n].co == co){
                     dirs[3] = false;
                 }
                 }else{  
@@ -100,13 +100,13 @@ public class gUtils {
                 }
             }
             if(dirs[2]){
-                if(c + n < 8){
-                    if(board[b][c + n].co == color.EMPTY
-                    || board[b][c + n].co == co.other()){
-                        arr.add(new Integer[]{(int) b, c + n});
+                if(pos2 + n < 8){
+                    if(board[pos][pos2 + n].co == color.EMPTY
+                    || board[pos][pos2 + n].co == co.other()){
+                        arr.add(new Integer[]{(int) pos, pos2 + n});
                     }
-                if(board[b][c + n].co == co.other()
-                || board[b][c + n].co == co){
+                if(board[pos][pos2 + n].co == co.other()
+                || board[pos][pos2 + n].co == co){
                     dirs[2] = false;
                 }
                 }else{  
@@ -114,13 +114,13 @@ public class gUtils {
                 }
             }
             if(dirs[1]){
-                if(b - n >= 0){
-                    if(board[b - n][c].co == color.EMPTY
-                    || board[b - n][c].co == co.other()){
-                        arr.add(new Integer[]{b - n, (int) c});
+                if(pos - n >= 0){
+                    if(board[pos - n][pos2].co == color.EMPTY
+                    || board[pos - n][pos2].co == co.other()){
+                        arr.add(new Integer[]{pos - n, (int) pos2});
                     }
-                if(board[b - n][c].co == co.other()
-                || board[b - n][c].co == co){
+                if(board[pos - n][pos2].co == co.other()
+                || board[pos - n][pos2].co == co){
                     dirs[1] = false;
                 }
                 }else{  
@@ -128,13 +128,13 @@ public class gUtils {
                 }
             }
             if(dirs[0]){
-                if(b + n < 8){
-                    if(board[b + n][c].co == color.EMPTY
-                    || board[b + n][c].co == co.other()){
-                        arr.add(new Integer[]{b + n, (int) c});
+                if(pos + n < 8){
+                    if(board[pos + n][pos2].co == color.EMPTY
+                    || board[pos + n][pos2].co == co.other()){
+                        arr.add(new Integer[]{pos + n, (int) pos2});
                     }
-                if(board[b + n][c].co == co.other()
-                || board[b + n][c].co == co){
+                if(board[pos + n][pos2].co == co.other()
+                || board[pos + n][pos2].co == co){
                     dirs[0] = false;
                 }
                 }else{  
