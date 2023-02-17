@@ -40,6 +40,26 @@ public class ChessGUIRemake extends Application{
         stage.show();
     }
 
+    public void onButtonClick(ChessButton but){
+        if(but.isSelected()){
+            but.deSelect();
+            anySelected = false;
+            selectedButton = null;
+        } else if(!anySelected){
+            but.select();
+            anySelected = true;
+            selectedButton = but;
+        } else {
+            selectedButton.deSelect();
+            if(game.move(new int[]{selectedButton.x, selectedButton.y}, new int[]{but.x, but.y})){
+                selectedButton.update(game.getBoard()[selectedButton.x][selectedButton.y]);
+                but.update(game.getBoard()[but.x][but.y]);
+            }
+            anySelected = false;
+            selectedButton = null;
+        }
+    }
+
     public void initialize(){
         grid.setStyle("height = 900.0");
         game = new chess();
@@ -50,30 +70,14 @@ public class ChessGUIRemake extends Application{
                 but.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent arg0) {
-                        if(but.isSelected()){
-                            but.deSelect();
-                            anySelected = false;
-                            selectedButton = null;
-                        } else if(!anySelected){
-                            but.select();
-                            anySelected = true;
-                            selectedButton = but;
-                        } else {
-                            selectedButton.deSelect();
-                            if(game.move(new int[]{selectedButton.x, selectedButton.y}, new int[]{but.x, but.y})){
-                                selectedButton.update(game.getBoard()[selectedButton.x][selectedButton.y]);
-                                but.update(game.getBoard()[but.x][but.y]);
-                            }
-                            anySelected = false;
-                            selectedButton = null;
-                        }
+                        onButtonClick(but);
                     }
                 });
                 board[7 - i][j] = but;
             }
             grid.addRow(i, board[7 - i]);
         }
-        
+
         for (int i = 0; i < 8; i++) {
             RowConstraints rc = new RowConstraints();
             rc.setFillHeight(true);
