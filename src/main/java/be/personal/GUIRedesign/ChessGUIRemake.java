@@ -3,9 +3,8 @@ package be.personal.GUIRedesign;
 import java.io.IOException;
 
 import be.personal.board.chess;
+import be.personal.pieces.piece;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,14 +16,15 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
+import org.jetbrains.annotations.NotNull;
 
 public class ChessGUIRemake extends Application{
     @FXML
-    private Button resetButton;
+    private Button resetButton = null;
     @FXML
-    private GridPane grid;
+    private GridPane grid = null;
     @FXML
-    private Label turnLabel;
+    private Label turnLabel = null;
     private static boolean anySelected;
     private static ChessButton selectedButton;
     private static Scene scene;
@@ -32,7 +32,7 @@ public class ChessGUIRemake extends Application{
     private static chess game;
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(@NotNull Stage stage) throws Exception {
         game = new chess();
         scene = new Scene(loadFXML("chessBase"), 1000, 800);
         stage.setTitle("Chess game");
@@ -40,7 +40,7 @@ public class ChessGUIRemake extends Application{
         stage.show();
     }
 
-    public void onButtonClick(ChessButton but){
+    public void onButtonClick(@NotNull ChessButton but){
         if(but.isSelected()){
             but.deSelect();
             anySelected = false;
@@ -58,21 +58,18 @@ public class ChessGUIRemake extends Application{
             anySelected = false;
             selectedButton = null;
         }
+
+        turnLabel.setText(game.getTurn());
     }
 
     public void initialize(){
-        grid.setStyle("height = 900.0");
+        grid.setStyle("height: 900.0;");
         game = new chess();
         board = new ChessButton[8][8];
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 final ChessButton but = new ChessButton(game.getBoard()[7 - i][j], 7 - i, j);
-                but.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent arg0) {
-                        onButtonClick(but);
-                    }
-                });
+                but.setOnAction(arg0 -> onButtonClick(but));
                 board[7 - i][j] = but;
             }
             grid.addRow(i, board[7 - i]);
@@ -88,6 +85,20 @@ public class ChessGUIRemake extends Application{
             grid.getRowConstraints().add(rc);
             grid.getColumnConstraints().add(cc);
         }
+
+        turnLabel.setText(game.getTurn());
+        resetButton.setOnAction((e) -> resetBoard());
+    }
+
+    private void resetBoard() {
+        game.newGame();
+        piece[][] pboard = game.getBoard();
+        for (int i = 0; i < pboard.length; i++) {
+            for (int j = 0; j < pboard.length; j++) {
+                board[i][j].update(pboard[7-i][j]);
+            }
+        }
+        turnLabel.setText(game.getTurn());
     }
 
     private Parent loadFXML(String name) throws IOException{
